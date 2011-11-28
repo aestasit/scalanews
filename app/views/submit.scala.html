@@ -1,0 +1,88 @@
+@(newsForm: Form[News])
+@import helper._
+@main(title = "submit") {
+<center>
+    <table border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#F6F6EF">
+      <tr>
+        <td bgcolor="#FF6600">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" style=
+          "padding:2px">
+            <tr>
+              <td style="width:18px;padding-right:4px"><a href=
+              "http://ycombinator.com"><img src="http://ycombinator.com/images/y18.gif"
+              width="18" height="18" style="border:1px #ffffff solid;" /></a></td>
+
+              <td style="line-height:12pt; height:10px;"><span class=
+              "pagetop"><b>Submit</b></span></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr style="height:10px">
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>
+          @helper.form(routes.Application.submitNews) {
+            <input type="hidden" name="fnid" value="L4RDJXnPmJ" />
+
+            <table border="0">
+              <tr>
+                <td>title</td>
+
+                <!--<td><input type="text" name="t" value="" size="50" /></td>-->
+				<td>@inputText(newsForm("title"))</td>
+			  </tr>
+
+              <tr>
+                <td>url</td>
+
+                <!--<td><input type="text" name="u" value="" size="50" /></td>-->
+				<td>@inputText(newsForm("link"))</td>
+              </tr>
+
+              <tr>
+                <td></td>
+
+                <td><b>or</b></td>
+              </tr>
+
+              <tr>
+                <td>text</td>
+
+                <td>
+                <textarea name="x" rows="4" cols="50">
+</textarea></td>
+              </tr>
+
+              <tr>
+                <td></td>
+
+                <td><input type="submit" value="submit" /></td>
+              </tr>
+
+              <tr style="height:20px">
+                <td></td>
+              </tr>
+
+              <tr>
+                <td></td>
+
+                <td>
+                  Leave url blank to submit a question for discussion. If there is no
+                  url, the text (if any) will appear at the top of the comments page. If
+                  there is a url, the text will be ignored.
+
+                  <p>You can also submit via <a href=
+                  "http://ycombinator.com/bookmarklet.html"><u>bookmarklet</u></a>.</p>
+                </td>
+              </tr>
+            </table>
+          }
+        </td>
+      </tr>
+    </table>
+  </center>
+}
