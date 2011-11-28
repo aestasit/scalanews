@@ -3,39 +3,52 @@
 # --- !Ups
 
 create table profile (
-  id                        bigint not null,
-  username                  varchar(255),
-  constraint pk_company primary key (id))
-;
+  id                    bigint not null,
+  username              varchar(25) not null,
+  password              varchar(18) not null,
+  created               timestamp,
+  email                 varchar(50),
+  constraint pk_profile primary key (username)
+);
 
-create table computer (
-  id                        bigint not null,
-  name                      varchar(255),
-  introduced                timestamp,
-  discontinued              timestamp,
-  company_id                bigint,
-  constraint pk_computer primary key (id))
-;
+create table story (
+  id                    bigint not null,
+  story                 clob,
+  profileId             bigint not null,
+  created               timestamp,
+  votes                 int default 0,
+  constraint pk_story primary key (id));
 
-create sequence company_seq start with 1000;
+create table comments (
+  id                    bigint not null,
+  commentclob           clob,
+  profileId             bigint not null,
+  storyId               bigint not null,
+  parentComment         bigint,
+  created               timestamp,
+  votes                 int default 0,
+  constraint pk_comments primary key(id));
 
-create sequence computer_seq start with 1000;
-
-alter table computer add constraint fk_computer_company_1 foreign key (company_id) references company (id) on delete restrict on update restrict;
-create index ix_computer_company_1 on computer (company_id);
-
+create table votes (
+  id                    bigint not null,
+  storyId               bigint not null,
+  commentId             bigint,
+  created               timestamp,
+  profileId             bigint not null,
+  constraint pk_votes primary key(id)
+);
+  
+alter table story add constraint fk_story_profile_1 foreign key (profileId) references profile (id) on delete restrict on update restrict;
+alter table comments add constraint fk_comments_profile_1 foreign key (profileId) references profile (id) on delete restrict on update restrict;
+alter table comments add constraint fk_comments_parent_2 foreign key (parentComment) references comments (id) on delete restrict on update restrict;
+alter table comments add constraint fk_comments_story_3 foreign key (storyId) references story (id) on delete restrict on update restrict;
+alter table votes add constraint fk_votes_profile_1 foreign key (profileId) references profile (id) on delete restrict on update restrict;
+alter table votes add constraint fk_votes_comment_2 foreign key (commentId) references comments (id) on delete restrict on update restrict;
+alter table votes add constraint fk_votes_story_3 foreign key (storyId) references story (id) on delete restrict on update restrict;
+  
 
 # --- !Downs
-
-SET REFERENTIAL_INTEGRITY FALSE;
-
-drop table if exists company;
-
-drop table if exists computer;
-
-SET REFERENTIAL_INTEGRITY TRUE;
-
-drop sequence if exists company_seq;
-
-drop sequence if exists computer_seq;
-
+drop table if exists profile;
+drop table if exists story;
+drop table if exists comments;
+drop table if exists votes;

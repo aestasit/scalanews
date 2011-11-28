@@ -44,7 +44,6 @@ object Application extends Controller {
       formWithErrors => BadRequest(views.html.login(formWithErrors)),
       user => Redirect(routes.Application.news).withSession("username" -> user._1)
     )
-	
   }
   
   def index = Action { 
