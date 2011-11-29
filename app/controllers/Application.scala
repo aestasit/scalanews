@@ -46,11 +46,11 @@ object Application extends Controller {
     )
   }
   
-  def index = Action { 
+  def index = Action { implicit request =>
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def news = Action { request =>
+  def news = Action { implicit request =>
     
     
     //val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", 100, 999))
@@ -58,7 +58,13 @@ object Application extends Controller {
 
   }
   
-  def submit = Action {
+  def logout = Action { implicit request =>
+    Redirect(routes.Application.news).withNewSession.flashing(
+      "success" -> "You've been logged out"
+    )
+  }
+  
+  def submit = Action { implicit request =>
     Ok(views.html.submit(newsForm))
   }
   
