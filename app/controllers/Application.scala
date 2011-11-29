@@ -52,7 +52,7 @@ object Application extends Controller {
 
   def news = Action { request =>
     val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", 100, 999))
-    Ok(views.html.news(news)
+    Ok(views.html.news(news))
 
   }
   
@@ -69,7 +69,7 @@ object Application extends Controller {
             News.create(
               News(NotAssigned, news.title, news.link, 1001, 0)
             )
-            Ok(views.html.news(news2)
+            Ok(views.html.news(news2))
         }
       
     )
