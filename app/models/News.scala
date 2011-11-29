@@ -10,7 +10,6 @@ case class News(id: Pk[Long], title: String, link: String, user: Long, points:Lo
 
 object News {
     
-    
   val simple = {
     get[Pk[Long]]("id") ~/
     get[String]("title") ~/
@@ -22,17 +21,31 @@ object News {
       )
     }
   }
+  
+  def ++(id:Long) = {
     
-    def list(top: Int): Seq[News] = {
-        DB.withConnection { implicit connection =>
+    DB.withConnection { implicit connection =>
       SQL(
         """
-          select * from story 
-          order by rank
+          update story set votes = votes +1 where id = {id}
         """
-      ).as(News.simple *)
+      ).on(
+        'id -> id
+      ).executeUpdate()
     }
+    println ("hello world ")
+  }
+  
+  def list(top: Int): Seq[News] = {
+    DB.withConnection { implicit connection =>
+        SQL(
+            """
+              select * from story 
+              order by rank
+            """
+        ).as(News.simple *)
     }
+  }
     
     def create(news: News): News = {
         DB.withConnection { implicit connection =>

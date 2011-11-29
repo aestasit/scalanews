@@ -78,6 +78,13 @@ object Application extends Controller {
 
   }
   
+  def voteNews(id: Long) = Action { implicit request =>
+      
+      News++(id)
+      Ok
+    
+  }
+  
 }
   
   
