@@ -18,6 +18,7 @@ create table story (
   profileId             bigint not null,
   created               timestamp,
   votes                 int default 0,
+  rank                  double,
   constraint pk_story primary key (id));
 
 create table comments (

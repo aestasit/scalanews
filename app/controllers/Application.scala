@@ -51,8 +51,10 @@ object Application extends Controller {
   }
 
   def news = Action { request =>
-    val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", 100, 999))
-    Ok(views.html.news(news))
+    
+    
+    //val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", 100, 999))
+    Ok(views.html.news(News.list(10)))
 
   }
   
