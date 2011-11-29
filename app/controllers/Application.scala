@@ -21,11 +21,11 @@ object Application extends Controller {
   
   val newsForm = Form(
     of(News.apply _)(
-	  "id" -> ignored(NotAssigned),
-	  "title" -> requiredText,
+      "id" -> ignored(NotAssigned),
+      "title" -> requiredText,
       "link" -> requiredText,
-	  "user" -> ignored(""),
-	  "points" -> ignored(1)
+      "user" -> ignored(100),
+      "points" -> ignored(1)
     )
   )
   
@@ -51,24 +51,27 @@ object Application extends Controller {
   }
 
   def news = Action { request =>
-	val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", "koevet", 999))
-	Ok(views.html.news(news))
+    val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", 100, 999))
+    Ok(views.html.news(news)
 
   }
   
   def submit = Action {
-	Ok(views.html.submit(newsForm))
+    Ok(views.html.submit(newsForm))
   }
   
   def submitNews = Action { implicit request =>
-  	newsForm.bindFromRequest.fold (
+      newsForm.bindFromRequest.fold (
       errors => BadRequest,
       news =>  {
-		    val news2: List[News] = List(News(null, news.title, news.link, "koevet", 0))
-			// Add the news!
-			Ok(views.html.news(news2))
+            val news2: List[News] = List(News(null, news.title, news.link, 100, 0))
+            // Add the news!
+            News.create(
+              News(NotAssigned, news.title, news.link, 1001, 0)
+            )
+            Ok(views.html.news(news2)
         }
-	  
+      
     )
 
   }
