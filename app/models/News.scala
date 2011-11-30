@@ -22,7 +22,27 @@ object News {
     }
   }
   
-  def ++(id:Long) = {
+  def userVote(userid:Long, newsid:Long) = {
+    DB.withConnection { implicit connection =>
+        // Get the task id
+        val id: Long = SQL("select next value for votes_seq").as(scalar[Long])
+        
+        SQL(
+        """
+          insert into vote (id, storyId, created, profileId) values (
+            {id}, {storyId}, {created}, {profileId}
+          )
+        """
+        ).on(
+            'id -> id,
+            'storyId -> newsid,
+            'created -> new java.util.Date(),
+            'profileId -> userid
+        ).executeUpdate()
+    }
+  }
+  
+  def newsVote(id:Long) = {
     
     DB.withConnection { implicit connection =>
       SQL(
@@ -33,7 +53,13 @@ object News {
         'id -> id
       ).executeUpdate()
     }
-    println ("hello world ")
+    
+  }
+  
+  
+  def ++(id:Long, profileId:Long) = {
+    newsVote(id)
+    userVote(id,profileId)
   }
   
   def list(top: Int): Seq[News] = {

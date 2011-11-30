@@ -80,7 +80,7 @@ object Application extends Controller {
   
   def voteNews(id: Long) = Action { implicit request =>
       
-      News++(id)
+      News++(id, 1001) // use real user id
       Ok
     
   }

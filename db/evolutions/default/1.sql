@@ -31,7 +31,7 @@ create table comments (
   votes                 int default 0,
   constraint pk_comments primary key(id));
 
-create table votes (
+create table vote (
   id                    bigint not null,
   storyId               bigint not null,
   commentId             bigint,
@@ -44,12 +44,13 @@ alter table story add constraint fk_story_profile_1 foreign key (profileId) refe
 alter table comments add constraint fk_comments_profile_1 foreign key (profileId) references profile (id) on delete restrict on update restrict;
 alter table comments add constraint fk_comments_parent_2 foreign key (parentComment) references comments (id) on delete restrict on update restrict;
 alter table comments add constraint fk_comments_story_3 foreign key (storyId) references story (id) on delete restrict on update restrict;
-alter table votes add constraint fk_votes_profile_1 foreign key (profileId) references profile (id) on delete restrict on update restrict;
-alter table votes add constraint fk_votes_comment_2 foreign key (commentId) references comments (id) on delete restrict on update restrict;
-alter table votes add constraint fk_votes_story_3 foreign key (storyId) references story (id) on delete restrict on update restrict;
+alter table vote add constraint fk_votes_profile_1 foreign key (profileId) references profile (id) on delete restrict on update restrict;
+alter table vote add constraint fk_votes_comment_2 foreign key (commentId) references comments (id) on delete restrict on update restrict;
+alter table vote add constraint fk_votes_story_3 foreign key (storyId) references story (id) on delete restrict on update restrict;
  
 create sequence news_seq start with 1000; 
 create sequence user_seq start with 1000;
+create sequence votes_seq start with 1000;
 
 # --- !Downs
 drop table if exists profile;
