@@ -85,10 +85,19 @@ object Application extends Controller {
   }
   
   def voteNews(id: Long) = Action { implicit request =>
-      
-      News++(id)
-      Ok
-    
+      request.session.get("username") match {
+        case None => Forbidden
+      	case Some(username) =>{
+      		val voter = User.findByUsername(username)
+      		voter match {
+      		 case None => Forbidden
+      		 case Some(u) => {
+      		 	News++(id,u.id)
+      		 	Ok
+      		 	}
+      		 }
+      	}
+    }
   }
   
 }

@@ -22,7 +22,7 @@ object News {
     }
   }
   
-  def ++(id:Long) = {
+  def ++(id:Long,voterId:Long) = {
     
     DB.withConnection { implicit connection =>
       SQL(
@@ -32,6 +32,7 @@ object News {
       ).on(
         'id -> id
       ).executeUpdate()
+      //ADD support for vote table
     }
     println ("hello world ")
   }
