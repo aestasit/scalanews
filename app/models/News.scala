@@ -59,7 +59,7 @@ object News {
   
   def ++(id:Long, profileId:Long) = {
     newsVote(id)
-    userVote(id,profileId)
+    userVote(profileId,id)
   }
   
   def list(top: Int): Seq[News] = {

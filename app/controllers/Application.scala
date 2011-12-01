@@ -85,10 +85,6 @@ object Application extends Controller {
   }
   
   def voteNews(id: Long) = Action { implicit request =>
-
-      
-      News++(id, 1001) // use real user id
-      Ok
       request.session.get("username") match {
         case None => Forbidden
       	case Some(username) =>{
