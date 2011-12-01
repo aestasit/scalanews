@@ -21,7 +21,7 @@ object News {
       )
     }
   }
-  
+
   def userVote(userid:Long, newsid:Long) = {
     DB.withConnection { implicit connection =>
         // Get the task id
@@ -43,7 +43,6 @@ object News {
   }
   
   def newsVote(id:Long) = {
-    
     DB.withConnection { implicit connection =>
       SQL(
         """
@@ -52,6 +51,7 @@ object News {
       ).on(
         'id -> id
       ).executeUpdate()
+      //ADD support for vote table
     }
     
   }
