@@ -6,29 +6,19 @@ import play.api.data._
 import models._
 import play.api.data.validation.Constraints._
 import anorm._
+import java.security.MessageDigest
 
 object Application extends Controller {
   
-  val loginForm = Form(
+  val loginForm = Form (
     of(
       "username" -> text,
       "password" -> text
     ) verifying ("Invalid email or password", result => result match {
-      case (username, password) => User.authenticate(username, password).isDefined
+      case (username, password) => User.authenticate(username, md5(password)).isDefined
     })
   )
 
-  
-  val newsForm = Form(
-    of(News.apply _)(
-      "id" -> ignored(NotAssigned),
-      "title" -> requiredText,
-      "link" -> requiredText,
-      "user" -> ignored(100),
-      "points" -> ignored(1)
-    )
-  )
-  
   /**
    * Login page.
    */
@@ -46,60 +36,48 @@ object Application extends Controller {
     )
   }
   
-  def index = Action { implicit request =>
-    Ok(views.html.index("Your new application is ready."))
-  }
-
-  def news = Action { implicit request =>
-    
-    
-    //val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", 100, 999))
-    Ok(views.html.news(News.list(10)))
-
-  }
-  
   def logout = Action { implicit request =>
     Redirect(routes.Application.news).withNewSession.flashing(
       "success" -> "You've been logged out"
     )
   }
   
-  def submit = Action { implicit request =>
-    Ok(views.html.submit(newsForm))
+  def index = Action { implicit request =>
+    Ok(views.html.index("Your new application is ready."))
   }
-  
-  def submitNews = Action { implicit request =>
-      newsForm.bindFromRequest.fold (
-      errors => BadRequest,
-      news =>  {
-            val news2: List[News] = List(News(null, news.title, news.link, 100, 0))
-            // Add the news!
-            News.create(
-              News(NotAssigned, news.title, news.link, 1001, 0)
-            )
-            Redirect("/news")
-        }
-      
-    )
 
+  def news = Action { implicit request =>
+    Ok(views.html.news(News.list(10)))
   }
   
-  def voteNews(id: Long) = Action { implicit request =>
-      request.session.get("username") match {
-        case None => Forbidden
-      	case Some(username) =>{
-      		val voter = User.findByUsername(username)
-      		voter match {
-      		 case None => Forbidden
-      		 case Some(u) => {
-      		 	News++(id,u.id)
-      		 	Ok
-      		 	}
-      		 }
-      	}
-    }
+  def md5(s: String) = {
+    
+    val m = MessageDigest.getInstance("SHA"); 
+    m.update("I58'_6d>O2238K*='2&*@@".getBytes("UTF8")); 
+    m.update(s.getBytes("UTF8")); 
+    val u = m.digest().map(0xFF & _).map { "%02x".format(_) }.mkString
+    println( u)
+    u
   }
   
+  
+  
+}
+ /**
+  * Provide security features
+  */
+trait Secured extends Security.AllAuthenticated {
+
+  /**
+   * Retrieve the connected user email.
+   */
+  override def username(request: RequestHeader) = request.session.get("username")
+
+  /**
+   * Redirect to login if the use in not authorized.
+   */
+  override def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
+
 }
   
   

@@ -1,0 +1,9 @@
+play.core.Invoker$$anonfun$receive$1$$anon$1: Execution exception [[JdbcSQLException: Referential integrity constraint
+iolation: "FK_VOTES_PROFILE_1: PUBLIC.VOTE FOREIGN KEY(PROFILEID) REFERENCES PUBLIC.PROFILE(ID)"; SQL statement:
+insert into vote (id, storyId, created, profileId) values (             ?, ?, ?, ?           ) [23506-158]]]
+        at play.core.Invoker$$anonfun$receive$1.apply(Invoker.scala:56) [play_2.9.1.jar:2.0-RC1-SNAPSHOT]
+        at play.core.Invoker$$anonfun$receive$1.apply(Invoker.scala:40) [play_2.9.1.jar:2.0-RC1-SNAPSHOT]
+        at akka.actor.Actor$class.apply(Actor.scala:545) [akka-actor-1.2.jar:na]
+        at play.core.Invoker.apply(Invoker.scala:37) [play_2.9.1.jar:2.0-RC1-SNAPSHOT]
+        at akka.actor.LocalActorRef.invoke(ActorRef.scala:905) [akka-actor-1.2.jar:na]
+        at akka.dispatch.MessageInvocation.invoke(MessageHandling.scala:25) [akka-actor-1.2.jar:na]

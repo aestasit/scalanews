@@ -22,7 +22,7 @@ object User {
   }
   
   def findByUsername(username:String): Option[User] = {
-  	DB.withConnection { implicit connection =>
+      DB.withConnection { implicit connection =>
       SQL("select id,username,email from profile where username = {username}").on(
         'username -> username
       ).as(User.simple ?)
@@ -34,8 +34,20 @@ object User {
    */
   def authenticate(username: String, password: String): Option[User] = {
     
-	Some(User(100,"koevet", "email","zombie"))
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+         select * from profile where 
+         username = {username} and password = {password}
+        """
+      ).on(
+        'username -> username,
+        'password -> password
+      ).as(User.simple ?)
+    }
   }
+  
+  
    
   
   

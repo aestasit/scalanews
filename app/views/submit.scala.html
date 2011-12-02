@@ -2,15 +2,15 @@
 @import helper._
 @main(title = "submit") {
 
-          @helper.form(routes.Application.submitNews) {
-				<@inputText(newsForm("title"))</td>
-			  </tr>
+          @helper.form(routes.NewsController.submitNews) {
+        <@inputText(newsForm("title"))</td>
+        </tr>
 
               <tr>
                 <td>url</td>
 
                 <!--<td><input type="text" name="u" value="" size="50" /></td>-->
-				<td>@inputText(newsForm("link"))</td>
+        <td>@inputText(newsForm("link"))</td>
               </tr>
 
               <tr>

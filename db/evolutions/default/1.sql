@@ -5,7 +5,7 @@
 create table profile (
   id                    bigint not null,
   username              varchar(25) not null,
-  password              varchar(18) not null,
+  password              varchar(255) not null,
   created               timestamp,
   email                 varchar(50),
   constraint pk_profile primary key (username)
@@ -13,7 +13,7 @@ create table profile (
 
 create table story (
   id                    bigint not null,
-  title                 varchar(25) not null,
+  title                 varchar(255) not null,
   story                 clob,
   profileId             bigint not null,
   created               timestamp,
