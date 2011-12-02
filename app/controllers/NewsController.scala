@@ -42,7 +42,8 @@ object NewsController extends Controller with Secured {
   }
   
   def voteNews(id: Long) = Action { implicit request =>
-      request.session.get("username") match {
+    
+    username(request) match {
         case None => Forbidden
         case Some(username) =>{
             val voter = User.findByUsername(username)
