@@ -6,3 +6,7 @@ $('.story a.upvote img').live "click",(e) ->
          alert("error")
       success:(data,textStatus,jqXHR) ->
          alert("done")
+
+$('.login').live "click",(e) -> 
+	e.preventDefault()
+	window.location.href='/login';

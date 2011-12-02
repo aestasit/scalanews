@@ -1,46 +1,26 @@
-@(form: Form[(String,String)])(implicit flash: Flash)
+@(form: Form[(String,String)])(implicit flash: Flash,session:Session)
 
-<b>Login</b><br><br>
 
-@helper.form(routes.Application.authenticate) {
-    <input type="hidden" name="fnid" value="vGF5VA7KUu" />
-
-    <table border="0">
-      <tr>
-        <td>username:</td>
-
-        <td><input type="text" name="username" size="20" autocorrect="off" autocapitalize="off" @form("username").value"/></td>
-      </tr>
-
-      <tr>
-        <td>password:</td>
-
-        <td><input type="password" name="password" size="20" /></td>
-      </tr>
-    </table><br />
-    <input type="submit" value="login" />
-  }
-
-  <br />
-  <b>Create Account</b><br />
-  <br />
-<!--
-  <form method="post" action="/y">
-    <input type="hidden" name="fnid" value="J5Jdoehpzz" />
-
-    <table border="0">
-      <tr>
-        <td>username:</td>
-
-        <td><input type="text" name="u" size="20" autocorrect="off" autocapitalize=
-        "off" /></td>
-      </tr>
-
-      <tr>
-        <td>password:</td>
-
-        <td><input type="password" name="p" size="20" /></td>
-      </tr>
-    </table><br />
-    <input type="submit" value="create account" />
-  </form>-->
+@main("Scala News"){
+<div class="row">
+	<div class="span-15">
+	@helper.form(routes.Application.authenticate) {
+		<fieldset>
+			<legend>Please login</login>
+			<div class="clearfix">
+				<label for="username">Username:</label>
+				<input class="span-8" id="username" name="username" type="text"/>
+			</div>
+			<div class="clearfix">
+				<label for="password">Password:</label>
+				<input class="span-8" id="password" name="password" type="password"/>
+			</div>
+			<div class="actions">
+            <input type="submit" class="btn primary" value="Login">
+          </div>
+		</fieldset>
+	
+	}
+	</div>
+</div>
+}
