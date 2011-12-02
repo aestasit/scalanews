@@ -1,6 +1,6 @@
-$('.story a.upvote').live "click",(e) ->
+$('.story a.upvote img').live "click",(e) ->
    e.preventDefault()
-   $.ajax $(e.target).attr("href"),
+   $.ajax $(e.target).parent().attr("href"),
       type: 'PUT',
       error:(jqXHR,textStatus,errorThrown) ->
          alert("error")
