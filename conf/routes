@@ -6,14 +6,16 @@
 GET     /                           controllers.Application.index
 
 GET     /login                      controllers.Application.login
+GET     /logout                     controllers.Application.logout
 POST    /login                      controllers.Application.authenticate
 
 
 
 GET     /news                       controllers.Application.news
-PUT     /news/:newsid/vote          controllers.Application.voteNews(newsid: Long)                      
+PUT     /news/:newsid/vote          controllers.NewsController.voteNews(newsid: Long)                      
 
-GET     /submit                     controllers.Application.submit
-POST    /submit                     controllers.Application.submitNews
+GET     /submit                     controllers.NewsController.submit
+POST    /submit                     controllers.NewsController.submitNews
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

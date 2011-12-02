@@ -6,6 +6,7 @@ import play.api.data._
 import models._
 import play.api.data.validation.Constraints._
 import anorm._
+import java.security.MessageDigest
 
 object Application extends Controller {
   
@@ -14,21 +15,10 @@ object Application extends Controller {
       "username" -> text,
       "password" -> text
     ) verifying ("Invalid email or password", result => result match {
-      case (username, password) => User.authenticate(username, password).isDefined
+      case (username, password) => User.authenticate(username, md5(password)).isDefined
     })
   )
 
-  
-  val newsForm = Form(
-    of(News.apply _)(
-      "id" -> ignored(NotAssigned),
-      "title" -> requiredText,
-      "link" -> requiredText,
-      "user" -> ignored(100),
-      "points" -> ignored(1)
-    )
-  )
-  
   /**
    * Login page.
    */
@@ -46,45 +36,48 @@ object Application extends Controller {
     )
   }
   
-  def index = Action { 
+  def logout = Action { implicit request =>
+    Redirect(routes.Application.news).withNewSession.flashing(
+      "success" -> "You've been logged out"
+    )
+  }
+  
+  def index = Action { implicit request =>
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def news = Action { request =>
-    
-    
-    //val news: List[News] = List(News(null, "Aestas buys Microsoft", "http://www.aestasit.com", 100, 999))
+  def news = Action { implicit request =>
     Ok(views.html.news(News.list(10)))
-
   }
   
-  def submit = Action {
-    Ok(views.html.submit(newsForm))
-  }
-  
-  def submitNews = Action { implicit request =>
-      newsForm.bindFromRequest.fold (
-      errors => BadRequest,
-      news =>  {
-            // Add the news!
-            News.create(
-              News(NotAssigned, news.title, news.link, 1001, 0)
-            )
-            Redirect("/news")
-        }
-      
-    )
-
-  }
-  
-  def voteNews(id: Long) = Action { implicit request =>
-      
-      News++(id, 1001) // use real user id
-      
-      Ok
+  def md5(s: String) = {
     
+    val m = MessageDigest.getInstance("SHA"); 
+    m.update("I58'_6d>O2238K*='2&*@@".getBytes("UTF8")); 
+    m.update(s.getBytes("UTF8")); 
+    val u = m.digest().map(0xFF & _).map { "%02x".format(_) }.mkString
+    println( u)
+    u
   }
   
+  
+  
+}
+ /**
+  * Provide security features
+  */
+trait Secured extends Security.AllAuthenticated {
+
+  /**
+   * Retrieve the connected user email.
+   */
+  override def username(request: RequestHeader) = request.session.get("username")
+
+  /**
+   * Redirect to login if the use in not authorized.
+   */
+  override def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
+
 }
   
   
