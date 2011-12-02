@@ -9,7 +9,7 @@ import anorm._
 
 object Application extends Controller {
   
-  val loginForm = Form(
+  val loginForm = Form (
     of(
       "username" -> text,
       "password" -> text
@@ -66,12 +66,11 @@ object Application extends Controller {
       newsForm.bindFromRequest.fold (
       errors => BadRequest,
       news =>  {
-            val news2: List[News] = List(News(null, news.title, news.link, 100, 0))
             // Add the news!
             News.create(
               News(NotAssigned, news.title, news.link, 1001, 0)
             )
-            Ok(views.html.news(news2))
+            Redirect("/news")
         }
       
     )
@@ -81,6 +80,7 @@ object Application extends Controller {
   def voteNews(id: Long) = Action { implicit request =>
       
       News++(id, 1001) // use real user id
+      
       Ok
     
   }
