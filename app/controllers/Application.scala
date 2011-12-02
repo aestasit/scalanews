@@ -77,7 +77,7 @@ object Application extends Controller {
             News.create(
               News(NotAssigned, news.title, news.link, 1001, 0)
             )
-            Ok(views.html.news(news2))
+            Redirect("/news")
         }
       
     )
