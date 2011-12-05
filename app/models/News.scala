@@ -6,18 +6,21 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
-case class News(id: Pk[Long], title: String, link: String, user: Long, points:Long)
+case class News(id: Pk[Long], title: String, link: String, user:Long,username:String, points:Long)
 
 object News {
+    
+
     
   val simple = {
     get[Pk[Long]]("id") ~/
     get[String]("title") ~/
     get[String]("story") ~/
     get[Long]("profileId") ~/
+    get[String]("username") ~/
     get[Int]("votes") ^^ {
-      case id~title~link~user~points => News(
-        id, title, link, user, points
+      case id~title~link~user~username~points => News(
+        id, title, link, user,username, points
       )
     }
   }
@@ -66,8 +69,8 @@ object News {
     DB.withConnection { implicit connection =>
         SQL(
             """
-              select * from story 
-              order by rank
+              select s.id,s.title,s.story,s.profileId,p.username,s.votes from story s left join profile p on s.profileId = p.id  
+              order by s.rank
             """
         ).as(News.simple *)
     }

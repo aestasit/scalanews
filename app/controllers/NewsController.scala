@@ -21,6 +21,7 @@ object NewsController extends Controller with Secured {
       "title" -> requiredText,
       "link" -> requiredText,
       "user" -> ignored(100),
+      "username"->ignored(""),
       "points" -> ignored(1)
     )
   )
@@ -35,7 +36,7 @@ object NewsController extends Controller with Secured {
       news =>  {
             // Add the news!
             News.create(
-              News(NotAssigned, news.title, news.link, 1001, 0)
+              News(NotAssigned, news.title, news.link, 1001,"", 0)
             )
             Redirect("/news")
         }
