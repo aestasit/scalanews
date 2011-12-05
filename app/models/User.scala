@@ -47,7 +47,26 @@ object User {
     }
   }
   
-  
+  def create(email: String, username: String, password: String) = {
+    DB.withConnection { implicit connection =>
+      // Get the task id
+      val id: Long = SQL("select next value for user_seq").as(scalar[Long])
+      SQL(
+        """
+          insert into profile (id, username, password, created, email) values (
+            {id}, {username}, {password}, {created}, {email}
+          )
+        """
+        ).on(
+            'id -> id,
+            'email -> email,
+            'username -> username,
+            'password -> password,
+            'created -> new java.util.Date()
+        ).executeUpdate() 
+    
+    }
+  }  
    
   
   

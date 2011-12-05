@@ -18,7 +18,15 @@ object Application extends Controller {
       case (username, password) => User.authenticate(username, md5(password)).isDefined
     })
   )
-
+  
+  val signupForm = Form (
+    of(
+      "username" -> text,
+      "password" -> text,
+      "email" -> text
+    ) 
+  )
+  
   /**
    * Login page.
    */
@@ -36,6 +44,24 @@ object Application extends Controller {
     )
   }
   
+  def signup = Action { implicit request =>
+      Ok(views.html.signup(signupForm))
+  }
+  
+  def createAccount = Action { implicit request =>
+    signupForm.bindFromRequest.fold (
+        formWithErrors => BadRequest(views.html.signup(formWithErrors)),
+        {
+          case (username, password, email) => 
+            println (email + ' ' + username + ' ' + password)
+            val userCreated =  User.create(email, username, md5(password))
+            Redirect(routes.Application.news).withSession(
+            "username" -> username).flashing("success" -> "You are signed up!")
+        }
+        
+    )
+  }
+  
   def logout = Action { implicit request =>
     Redirect(routes.Application.news).withNewSession.flashing(
       "success" -> "You've been logged out"
@@ -47,6 +73,7 @@ object Application extends Controller {
   }
 
   def news = Action { implicit request =>
+    Logger("play").error("vote news")
     Ok(views.html.news(News.list(10)))
   }
   
@@ -55,9 +82,8 @@ object Application extends Controller {
     val m = MessageDigest.getInstance("SHA"); 
     m.update("I58'_6d>O2238K*='2&*@@".getBytes("UTF8")); 
     m.update(s.getBytes("UTF8")); 
-    val u = m.digest().map(0xFF & _).map { "%02x".format(_) }.mkString
-    println( u)
-    u
+    m.digest().map(0xFF & _).map { "%02x".format(_) }.mkString
+   
   }
   
   

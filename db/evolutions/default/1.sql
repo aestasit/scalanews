@@ -48,9 +48,9 @@ alter table vote add constraint fk_votes_profile_1 foreign key (profileId) refer
 alter table vote add constraint fk_votes_comment_2 foreign key (commentId) references comments (id) on delete restrict on update restrict;
 alter table vote add constraint fk_votes_story_3 foreign key (storyId) references story (id) on delete restrict on update restrict;
  
-create sequence news_seq start with 1000; 
-create sequence user_seq start with 1000;
-create sequence votes_seq start with 1000;
+create sequence news_seq start with 1020; 
+create sequence user_seq start with 1020;
+create sequence votes_seq start with 1020;
 
 # --- !Downs
 drop table if exists profile;

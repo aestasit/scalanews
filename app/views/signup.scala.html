@@ -1,0 +1,31 @@
+@(form: Form[(String,String, String)])(implicit flash: Flash,session:Session)
+
+
+@main("Scala News"){
+<div id="login" class="row">
+  <div class="span7">
+  @helper.form(routes.Application.createAccount) {
+    <fieldset>
+      <legend>Create Account</legend>
+      <div class="clearfix span6">
+        <label for="username">Email:</label>
+        <input class="span3" id="email" name="email" type="text"/>
+      </div>
+      <div class="clearfix span6">
+        <label for="password">Username:</label>
+        <input class="span3" id="username" name="username" type="text"/>
+      </div>
+      <div class="clearfix span6">
+        <label for="password">Password:</label>
+        <input class="span3" id="password" name="password" type="password"/>
+      </div>
+      
+      <div class="actions">
+            <input type="submit" class="btn primary" value="Signup">
+          </div>
+    </fieldset>
+  
+  }
+  </div>
+</div>
+}

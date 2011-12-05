@@ -9,6 +9,7 @@ import anorm._
 import models._
 import views._
 
+
 /**
  * Manage news related operations.
  */

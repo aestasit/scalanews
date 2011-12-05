@@ -8,8 +8,8 @@ GET     /                           controllers.Application.index
 GET     /login                      controllers.Application.login
 GET     /logout                     controllers.Application.logout
 POST    /login                      controllers.Application.authenticate
-
-
+GET     /signup                     controllers.Application.signup
+POST    /signup                     controllers.Application.createAccount
 
 GET     /news                       controllers.Application.news
 PUT     /news/:newsid/vote          controllers.NewsController.voteNews(newsid: Long)                      
