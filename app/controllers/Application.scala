@@ -53,10 +53,10 @@ object Application extends Controller {
         formWithErrors => BadRequest(views.html.signup(formWithErrors)),
         {
           case (username, password, email) => 
-            println (email + ' ' + username + ' ' + password)
-            val userCreated =  User.create(email, username, md5(password))
-            Redirect(routes.Application.news).withSession(
-            "username" -> username).flashing("success" -> "You are signed up!")
+            User.create(email, username, md5(password))
+            Redirect(routes.Application.news).withSession (
+              "username" -> username).flashing("success" -> "You are signed up!"
+            )
         }
         
     )
