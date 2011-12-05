@@ -2,18 +2,18 @@
 
 
 @main("Scala News"){
-<div class="row">
-	<div class="span-15">
+<div id="login" class="row">
+	<div class="span7">
 	@helper.form(routes.Application.authenticate) {
 		<fieldset>
-			<legend>Please login</login>
-			<div class="clearfix">
+			<legend>Please login</legend>
+			<div class="clearfix span6">
 				<label for="username">Username:</label>
-				<input class="span-8" id="username" name="username" type="text"/>
+				<input class="span3" id="username" name="username" type="text"/>
 			</div>
-			<div class="clearfix">
+			<div class="clearfix span6">
 				<label for="password">Password:</label>
-				<input class="span-8" id="password" name="password" type="password"/>
+				<input class="span3" id="password" name="password" type="password"/>
 			</div>
 			<div class="actions">
             <input type="submit" class="btn primary" value="Login">
