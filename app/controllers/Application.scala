@@ -86,6 +86,9 @@ object Application extends Controller {
    
   }
   
+  def viewNewsComments(id:Long) = Action { implicit request =>
+    Ok(views.html.news(News.list(10)))
+  }
   
   
 }

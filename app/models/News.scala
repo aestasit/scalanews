@@ -6,7 +6,7 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
-case class News(id: Pk[Long], title: String, link: String, user:Long,username:String, points:Long)
+case class News(id: Pk[Long], title: String, link: String, user:Long,username:String, points:Long,comments:Long)
 
 object News {
     
@@ -18,9 +18,10 @@ object News {
     get[String]("story") ~/
     get[Long]("profileId") ~/
     get[String]("username") ~/
-    get[Int]("votes") ^^ {
-      case id~title~link~user~username~points => News(
-        id, title, link, user,username, points
+    get[Int]("votes") ~/
+    get[Long]("comments") ^^ {
+      case id~title~link~user~username~points~comments => News(
+        id, title, link, user,username, points,comments
       )
     }
   }
@@ -69,7 +70,7 @@ object News {
     DB.withConnection { implicit connection =>
         SQL(
             """
-              select s.id,s.title,s.story,s.profileId,p.username,s.votes from story s left join profile p on s.profileId = p.id  
+              select s.id,s.title,s.story,s.profileId,p.username,s.votes,(select count(*) from comments where storyId = s.id)as comments from story s left join profile p on s.profileId = p.id  
               order by s.rank
             """
         ).as(News.simple *)

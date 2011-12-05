@@ -14,6 +14,7 @@ POST    /signup                     controllers.Application.createAccount
 GET     /news                       controllers.Application.news
 PUT     /news/:newsid/vote          controllers.NewsController.voteNews(newsid: Long)                      
 
+GET		/news/:newsid/comments		controllers.Application.viewNewsComments(newsid: Long)
 GET     /submit                     controllers.NewsController.submit
 POST    /submit                     controllers.NewsController.submitNews
 
