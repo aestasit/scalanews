@@ -3,3 +3,9 @@ body{padding-top:40px}
 #log_sig{padding-top:4px;}
 #login {margin-top:35px;}
 #login legend{padding:0;}
+.comment{
+	background-color:#eaeaea;
+	margin:0 0 8px 0;
+}
+
+.comment .info {margin:0;background-color:#aeaeae;border-top:1px solid #fff}

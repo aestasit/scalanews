@@ -23,10 +23,10 @@ create table story (
 
 create table comments (
   id                    bigint not null,
-  commentclob           clob,
+  comment               clob,
   profileId             bigint not null,
   storyId               bigint not null,
-  parentComment         bigint,
+  parentComment         bigint null,
   created               timestamp,
   votes                 int default 0,
   constraint pk_comments primary key(id));

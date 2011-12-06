@@ -87,7 +87,8 @@ object Application extends Controller {
   }
   
   def viewNewsComments(id:Long) = Action { implicit request =>
-    Ok(views.html.news(News.list(10)))
+    val story = News.findById(id)
+    Ok(views.html.comments(story.get,Comment.listByStoryId(id)))
   }
   
   
