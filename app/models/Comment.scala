@@ -23,9 +23,11 @@ object Comment {
 		DB.withConnection { implicit connection =>
 			SQL(
 			   """
-			     select comments.id,comments.comment,comments.profileId,profile.username,comments.storyId,comments.parentComment from comments left join profile profile on comments.profileId = profile.id
+			     select comments.id,comments.comment,comments.profileId,profile.username,comments.storyId,comments.parentComment from comments left join profile profile on comments.profileId = profile.id where comments.storyId = {storyId}
 			   """
-			   ).as(Comment.simple *)
+			   ).on(
+			   		'storyId -> storyId
+				   ).as(Comment.simple *)
 		}
 	
 	} 
@@ -34,9 +36,7 @@ object Comment {
         DB.withConnection { implicit connection =>
     
         // Get the task id
-          val id: Long = comment.id.getOrElse {
-            SQL("select next value for comments_seq").as(scalar[Long])
-          }
+          val id: Long = SQL("select next value for comments_seq").as(scalar[Long])
           SQL(
             """
               insert into comments(id,comment,profileId,storyId,created) values (

@@ -6,17 +6,14 @@
 @main(title = "news") {
     
 	@newz.map { n =>
-	
-
-
-	<div class="row story" style="border:1px solid red">
+	<div class="row story">
 		
-			<div class="span-3">
+			<div class="span1">
 				<h2><a class="@connectedClass("login","upvote")" href="@routes.NewsController.voteNews(n.id.get)">
 					<img src="@routes.Assets.at("images/upvote.png")"/>
 				</a></h2>
 			</div>
-			<div class="span-11">
+			<div class="span11">
 			<h3>@n.title</h3><span>(@n.link)</span>
 			<p><span>@n.points</span> by <a href="#">@n.username</a> | 1 hour ago | <a href="@routes.Application.viewNewsComments(n.id.get)">@n.comments comments</a> </p>
 			</div>
