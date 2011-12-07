@@ -21,7 +21,7 @@ object Application extends Controller {
   
   val signupForm = Form (
     of(
-      "username" -> text,
+      "username" -> (text verifying ("dio gane",{ !User.findByUsername(_).isDefined })),
       "password" -> text,
       "email" -> text
     ) 
@@ -92,18 +92,28 @@ object Application extends Controller {
  /**
   * Provide security features
   */
-trait Secured extends Security.AllAuthenticated {
+trait Secured {
 
   /**
    * Retrieve the connected user email.
    */
-  override def username(request: RequestHeader) = request.session.get("username")
+  private def username(request: RequestHeader) = request.session.get("username")
 
   /**
-   * Redirect to login if the use in not authorized.
+   * Redirect to login if the user in not authorized.
    */
-  override def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
+  private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
+  
+  // --
+  
+  /** 
+   * Action for authenticated users.
+   */
+  def IsAuthenticated(f: => String => Request[AnyContent] => Result) = Security.Authenticated(username, onUnauthorized) { user =>
+    Action(request => f(user)(request))
+  }
 
+  
 }
   
   

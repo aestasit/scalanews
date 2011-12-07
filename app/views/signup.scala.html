@@ -5,6 +5,12 @@
 <div id="login" class="row">
   <div class="span7">
   @helper.form(routes.Application.createAccount) {
+            @form.globalError.map { error =>
+                <p class="error">
+                    @error.message
+                </p>
+            }
+
     <fieldset>
       <legend>Create Account</legend>
       <div class="clearfix span6">
