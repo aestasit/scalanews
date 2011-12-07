@@ -27,12 +27,12 @@ object News {
   }
 
   def findById(id:Long) : Option[News] = {
-  	 DB.withConnection { implicit connection =>
+     DB.withConnection { implicit connection =>
       SQL("""
-      			select s.id,s.title,s.story,s.profileId,p.username,s.votes,
-      			(select count(*) from comments where storyId = s.id)as comments from story s left join profile p on s.profileId = p.id 
-      			where s.id = {id}""")
-      			.on(
+            select s.id,s.title,s.story,s.profileId,p.username,s.votes,
+            (select count(*) from comments where storyId = s.id)as comments from story s left join profile p on s.profileId = p.id 
+            where s.id = {id}""")
+            .on(
         'id -> id
       ).as(News.simple ?)
     }

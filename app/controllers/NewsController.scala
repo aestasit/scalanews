@@ -15,8 +15,6 @@ import views._
  */
 object NewsController extends Controller with Secured {
   
-      
-  
   val newsForm = Form(
     of(News.apply _, News.unapply _)(
       "id" -> ignored(NotAssigned),
@@ -29,27 +27,24 @@ object NewsController extends Controller with Secured {
     )
   )
 
-  
-  
-  def submit = Action { implicit request =>
+  def submit = IsAuthenticated { username => implicit request =>
     Ok(views.html.submit(newsForm))
   }
   
   def submitNews = IsAuthenticated { username => implicit request =>
       newsForm.bindFromRequest.fold (
-      errors => BadRequest,
-      news =>  {
-            // Add the news!
-            News.create(
-              News(NotAssigned, news.title, news.link, 1001,"", 0,0)
-            )
-            Redirect("/news")
-        }
-    )
+        errors => BadRequest,
+        news =>  {
+              // Add the news!
+              News.create(
+                News(NotAssigned, news.title, news.link, 1001,"", 0,0)
+              )
+              Redirect("/news")
+          }
+      )
   }
   
   def voteNews(id: Long) = IsAuthenticated  { username => _ =>
-    
       val voter = User.findByUsername(username)
       voter match {
           case None => Forbidden
