@@ -1,4 +1,4 @@
-@(story:News,comments:Seq[Comment])(implicit session:Session)
+@(story:News,comments:Seq[Comment],form: Form[models.Comment])(implicit session:Session)
 @main(title = "comments") {
 	<div class="row story">
 		
@@ -10,16 +10,14 @@
 	</div>
 	
 	<div class="row cf">
-		<form name="commentform" action="@routes.Application.commentNews(story.id.get)" method="POST">
+		@helper.form(routes.Application.commentNews(story.id.get)) {
 			<h3>comment this news:</h3>
-			<textarea class="xxlarge" rows="4">
-			</textarea>
+			<textarea class="xxlarge" name="comment" rows="4"></textarea>
 			<input type="submit" value="comment" class="btn info"/>
-		</form>
+		}
 	</div>
 	@comments.map {c =>
 		<div class="row comment">
-			
 				<p>@c.comment</p>
 				<p class="info"><span>by @c.username</span>
 			

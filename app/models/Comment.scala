@@ -4,12 +4,12 @@ import models._
 import anorm._
 import anorm.SqlParser._
 import play.api.db._
-case class Comment(id:Long,comment:String,profileId:Long,username:String,storyId:Long,parent:Option[Long])
+case class Comment(id: Pk[Long],comment:String,profileId:Long,username:String,storyId:Long,parent:Option[Long])
 
 object Comment {
 
 	val simple = {
-		get[Long]("comments.id") ~/
+		get[Pk[Long]]("comments.id") ~/
 		get[String]("comments.comment") ~/
 		get[Long]("comments.profileId") ~/
 		get[String]("profile.username") ~/
@@ -29,6 +29,31 @@ object Comment {
 		}
 	
 	} 
+
+	 def create(comment: Comment): Comment = {
+        DB.withConnection { implicit connection =>
+    
+        // Get the task id
+          val id: Long = comment.id.getOrElse {
+            SQL("select next value for comments_seq").as(scalar[Long])
+          }
+          SQL(
+            """
+              insert into comments(id,comment,profileId,storyId,created) values (
+                {id}, {comment}, {profileId}, {storyId}, {created}
+              )
+            """
+          ).on(
+            'id -> id,
+            'comment -> comment.comment,
+            'profileId -> comment.profileId,
+            'storyId -> comment.storyId,
+            'created -> new java.util.Date()
+          ).executeUpdate()
+          
+          comment.copy(id = Id(id))
+        }
+    }
 
 
 }

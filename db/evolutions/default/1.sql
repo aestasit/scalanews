@@ -51,6 +51,7 @@ alter table vote add constraint fk_votes_story_3 foreign key (storyId) reference
 create sequence news_seq start with 1020; 
 create sequence user_seq start with 1020;
 create sequence votes_seq start with 1020;
+create sequence comments_seq start with 3000;
 
 # --- !Downs
 drop table if exists profile;

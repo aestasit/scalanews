@@ -88,12 +88,12 @@ object Application extends Controller {
   
   def viewNewsComments(id:Long) = Action { implicit request =>
     val story = News.findById(id)
-    Ok(views.html.comments(story.get,Comment.listByStoryId(id)))
+    Ok(views.html.comments(story.get,Comment.listByStoryId(id),commentForm))
   }
   
   val commentForm = Form(
       of(Comment.apply _,Comment.unapply _)(
-        "id" -> ignored(0),
+        "id" ->  ignored(NotAssigned),
         "comment" -> requiredText,
         "profileId" -> ignored(0),
         "username" -> ignored(""),
@@ -103,11 +103,21 @@ object Application extends Controller {
     )
 
   def commentNews(id:Long) = Action {implicit request =>
+     val story = News.findById(id)
      commentForm.bindFromRequest.fold (
-       errors => BadRequest,
+       errors => {
+         BadRequest(views.html.comments(story.get,Comment.listByStoryId(id),errors))
+       },
        comment => {
-         Logger("play").error(comment.comment +":" +id)
-         Redirect("/news")         
+         val commenter = User.findByUsername(request.session.get("username").get)
+         commenter match {
+         case None => Forbidden
+         case Some(u) => {
+              Comment.create(
+                Comment(NotAssigned,comment.comment,u.id,u.username,id,null));
+              Ok(views.html.news(News.list(10)))
+          }
+        }
        }
      )
 
@@ -121,7 +131,7 @@ object Application extends Controller {
 trait Secured {
 
   /**
-   * Retrieve the connected user email.
+   * Retrieve the connected user username.
    */
   private def username(request: RequestHeader) = request.session.get("username")
 
