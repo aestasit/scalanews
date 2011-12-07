@@ -14,7 +14,9 @@ import views._
  * Manage news related operations.
  */
 object NewsController extends Controller with Secured {
-    
+  
+      
+  
   val newsForm = Form(
     of(News.apply _, News.unapply _)(
       "id" -> ignored(NotAssigned),
@@ -26,6 +28,8 @@ object NewsController extends Controller with Secured {
       "comments" -> ignored(0)
     )
   )
+
+  
   
   def submit = Action { implicit request =>
     Ok(views.html.submit(newsForm))
@@ -55,5 +59,5 @@ object NewsController extends Controller with Secured {
           }
     }
   }
-
+  
 }

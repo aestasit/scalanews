@@ -91,8 +91,30 @@ object Application extends Controller {
     Ok(views.html.comments(story.get,Comment.listByStoryId(id)))
   }
   
-  
+  val commentForm = Form(
+      of(Comment.apply _,Comment.unapply _)(
+        "id" -> ignored(0),
+        "comment" -> requiredText,
+        "profileId" -> ignored(0),
+        "username" -> ignored(""),
+        "storyId" -> ignored(0),
+        "parent" -> ignored(Option(0))
+      )
+    )
+
+  def commentNews(id:Long) = Action {implicit request =>
+     commentForm.bindFromRequest.fold (
+       errors => BadRequest,
+       comment => {
+         Logger("play").error(comment.comment +":" +id)
+         Redirect("/news")         
+       }
+     )
+
+  }
 }
+  
+
  /**
   * Provide security features
   */

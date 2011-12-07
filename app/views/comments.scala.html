@@ -9,6 +9,14 @@
 			</div>
 	</div>
 	
+	<div class="row cf">
+		<form name="commentform" action="@routes.Application.commentNews(story.id.get)" method="POST">
+			<h3>comment this news:</h3>
+			<textarea class="xxlarge" rows="4">
+			</textarea>
+			<input type="submit" value="comment" class="btn info"/>
+		</form>
+	</div>
 	@comments.map {c =>
 		<div class="row comment">
 			
