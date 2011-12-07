@@ -119,8 +119,19 @@ object News {
         }
     }
     
-    //def list
     
+    def getVotedNewsByUser(profileId:Long, max:Int): Seq[String] = {
+      DB.withConnection { implicit connection =>
+        val votedNews = SQL(
+          """
+            select storyId from vote where profileId = {id} order by created desc
+          """
+          ).on('id -> profileId)
+        votedNews().map (row => row[Long]("storyId").toString ).toList
+        
+      }
+
+    }    
     
     
 }

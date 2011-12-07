@@ -1,24 +1,24 @@
-@(newz: Seq[News])(implicit session: Session)
+@(newz: Seq[News], votedStories:List[String])(implicit session: Session)
 @connectedClass(notConnectedClass:String,connectedClass:String) = @{
-	if(session.get("username")){connectedClass}else{notConnectedClass}
+  if(session.get("username")){connectedClass}else{notConnectedClass}
 }
 
 @main(title = "news") {
+  @newz.map { n =>
+  <div class="row story">
     
-	@newz.map { n =>
-	<div class="row story">
-		
-			<div class="span1">
-				<h2><a class="@connectedClass("login","upvote")" href="@routes.NewsController.voteNews(n.id.get)">
-					<img src="@routes.Assets.at("images/upvote.png")"/>
-				</a></h2>
-			</div>
-			<div class="span11">
-			<h3>@n.title</h3><span>(@n.link)</span>
-			<p><span>@n.points</span> by <a href="#">@n.username</a> | 1 hour ago | <a href="@routes.Application.viewNewsComments(n.id.get)">@n.comments comments</a> </p>
-			</div>
-		
-	</div>
-	
-	}
+      <div class="span1">
+        @if(!votedStories.exists(_ == n.id.get.toString)) {
+        <h2><a class="@connectedClass("login","upvote")" href="@routes.NewsController.voteNews(n.id.get)">
+          <img src="@routes.Assets.at("images/upvote.png")"/>
+        </a></h2>
+        }
+      </div>
+      <div class="span11">
+      <h3>[@n.id.get.toString] @n.title</h3><span>(@n.link)</span>
+      <p><span>@n.points</span> by <a href="#">@n.username</a> | 1 hour ago | <a href="@routes.Application.viewNewsComments(n.id.get)">@n.comments comments</a> </p>
+      </div>
+  </div>
+  
+  }
 }

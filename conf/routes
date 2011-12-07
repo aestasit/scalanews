@@ -21,3 +21,6 @@ POST    /submit                     controllers.NewsController.submitNews
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Temp
+GET /ch/:userid                     controllers.Application.ch(userid:Long)                           

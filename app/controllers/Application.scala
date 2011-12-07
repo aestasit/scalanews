@@ -26,7 +26,9 @@ object Application extends Controller {
       "email" -> text
     ) 
   )
-  
+  def votedStories(request:Request[AnyContent]):List[String] = {
+    request.session.get("voted_stories").getOrElse("").split(",").toList
+  }
   /**
    * Login page.
    */
@@ -40,8 +42,14 @@ object Application extends Controller {
   def authenticate = Action { implicit request =>
     loginForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.login(formWithErrors)),
-      user => Redirect(routes.Application.news).withSession("username" -> user._1)
-    )
+      user => Redirect(routes.Application.news)
+        .withSession("username" -> user._1, 
+        "voted_stories" -> listToString(News.getVotedNewsByUser(User.findByUsername(user._1).map {_.id}.getOrElse(0), 200))))  
+  }
+  
+  def listToString(list: Seq[String]): String = list match {
+    case head :: tail => tail.foldLeft(head)(_ + "," + _)
+    case Nil => ""
   }
   
   def signup = Action { implicit request =>
@@ -73,8 +81,8 @@ object Application extends Controller {
   }
 
   def news = Action { implicit request =>
-    Logger("play").error("vote news")
-    Ok(views.html.news(News.list(10)))
+    //Logger("play").error("vote news")
+    Ok(views.html.news(News.list(10), votedStories(request)))
   }
   
   def md5(s: String) = {
@@ -115,13 +123,20 @@ object Application extends Controller {
          case Some(u) => {
               Comment.create(
                 Comment(NotAssigned,comment.comment,u.id,u.username,id,null));
-              Ok(views.html.news(News.list(10)))
+              Ok(views.html.news(News.list(10),votedStories(request)))
           }
         }
        }
      )
 
   }
+  
+  def ch(id:Long) = Action {implicit request =>
+    //println ( News.getVotedNewsByUser(id, 200).reduceLeft{  _ + "," + _})
+    println (request.session.get("voted_stories"))
+    Ok(views.html.login(loginForm))
+  }
+  
 }
   
 
