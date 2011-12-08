@@ -2,12 +2,13 @@
 @connectedClass(notConnectedClass:String,connectedClass:String) = @{
   if(session.get("username")){connectedClass}else{notConnectedClass}
 }
+@isVoted(id:String) = @{ if(votedStories.exists(_ == id)){"voted"}else{""}}
 
 @main(title = "news") {
   @newz.map { n =>
   <div class="row story">
     
-      <div class="span1">
+      <div class="span1 @isVoted(n.id.get.toString)">
         @if(!votedStories.exists(_ == n.id.get.toString)) {
         <h2><a class="@connectedClass("login","upvote")" href="@routes.NewsController.voteNews(n.id.get)">
           <img src="@routes.Assets.at("images/upvote.png")"/>
