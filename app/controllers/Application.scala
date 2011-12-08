@@ -26,9 +26,13 @@ object Application extends Controller {
       "email" -> text
     ) 
   )
+
   def votedStories(request:Request[AnyContent]):List[String] = {
-    request.session.get("voted_stories").getOrElse("").split(",").toList
+    val x1 = request.session.get("voted_stories").getOrElse("").split(",").toList
+    println (x1)
+    x1
   }
+  
   /**
    * Login page.
    */

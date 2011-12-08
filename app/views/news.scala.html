@@ -5,6 +5,7 @@
 @isVoted(id:String) = @{ if(votedStories.exists(_ == id)){"voted"}else{""}}
 
 @main(title = "news") {
+  
   @newz.map { n =>
   <div class="row story">
     

@@ -44,13 +44,14 @@ object NewsController extends Controller with Secured {
       )
   }
   
-  def voteNews(id: Long) = IsAuthenticated  { username => _ =>
+  def voteNews(id: Long) = IsAuthenticated  { username => implicit request =>
       val voter = User.findByUsername(username)
       voter match {
           case None => Forbidden
           case Some(u) => {
               News++(id,u.id)
-              Ok
+              val voted = request.session.get("voted_stories").getOrElse("")
+              Ok("").withSession(request.session.+("voted_stories", id+","+voted))
           }
     }
   }
