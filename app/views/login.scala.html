@@ -4,15 +4,15 @@
 @main("Scala News"){
 <div id="login" class="row">
 	<div class="span7">
-	@helper.form(routes.Application.authenticate) {
+	@helper.form(routes.Application.authenticate,'class->"form-stacked") {
 		<fieldset>
 			<legend>Please login</legend>
 			<div class="clearfix span6">
-				<label for="username">Username:</label>
+				<label for="username">Username</label>
 				<input class="span3" id="username" name="username" type="text"/>
 			</div>
 			<div class="clearfix span6">
-				<label for="password">Password:</label>
+				<label for="password">Password</label>
 				<input class="span3" id="password" name="password" type="password"/>
 			</div>
 			<div class="actions">

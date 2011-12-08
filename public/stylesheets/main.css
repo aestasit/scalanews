@@ -1,13 +1,15 @@
 body{padding-top:40px} 
 .story{margin-top:8px;}
 #log_sig{padding-top:4px;}
-#login {margin-top:35px;}
+#login,#sf {margin-top:35px;}
 #login legend{padding:0;}
 .comment{
 	background-color:#eaeaea;
 	margin:0 0 8px 0;
 }
 .cf{margin-left:15px;}
-.cf .btn{margin-top:52px;}
+.cf .btn{margin-top:8px;}
 .comment .info {margin:0;background-color:#aeaeae;border-top:1px solid #fff}
 .voted {height:1px;width:40px;}
+.user-info{margin-top:8px;}
+.user-info span {color:#eaeaea}

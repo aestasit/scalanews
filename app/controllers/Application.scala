@@ -8,7 +8,7 @@ import play.api.data.validation.Constraints._
 import anorm._
 import java.security.MessageDigest
 
-object Application extends Controller {
+object Application extends Controller with Secured {
   
   val loginForm = Form (
     of(
@@ -114,7 +114,7 @@ object Application extends Controller {
       )
     )
 
-  def commentNews(id:Long) = Action {implicit request =>
+  def commentNews(id:Long) = IsAuthenticated  { username => implicit request =>
      val story = News.findById(id)
      commentForm.bindFromRequest.fold (
        errors => {
@@ -136,8 +136,6 @@ object Application extends Controller {
   }
   
   def ch(id:Long) = Action {implicit request =>
-    //println ( News.getVotedNewsByUser(id, 200).reduceLeft{  _ + "," + _})
-    println (request.session.get("voted_stories"))
     Ok(views.html.login(loginForm))
   }
   

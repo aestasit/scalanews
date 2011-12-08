@@ -4,7 +4,7 @@
 @main("Scala News"){
 <div id="login" class="row">
   <div class="span7">
-  @helper.form(routes.Application.createAccount) {
+  @helper.form(routes.Application.createAccount,'class->"form-stacked") {
             @form.globalError.map { error =>
                 <p class="error">
                     @error.message
@@ -14,15 +14,15 @@
     <fieldset>
       <legend>Create Account</legend>
       <div class="clearfix span6">
-        <label for="username">Email:</label>
+        <label for="username">Email</label>
         <input class="span3" id="email" name="email" type="text"/>
       </div>
       <div class="clearfix span6">
-        <label for="password">Username:</label>
+        <label for="password">Username</label>
         <input class="span3" id="username" name="username" type="text"/>
       </div>
       <div class="clearfix span6">
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
         <input class="span3" id="password" name="password" type="password"/>
       </div>
       

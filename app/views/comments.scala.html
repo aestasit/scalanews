@@ -5,7 +5,7 @@
 			<div class="span11">
 			<h3>@story.title</h3>
 			<span>(@story.link)</span>
-			<p><span>@story.points</span> by <a href="#">@story.username</a> | 1 hour ago </p>
+			<p><span>@story.points points</span> by <a href="#">@story.username</a> | 1 hour ago </p>
 			</div>
 	</div>
 	
@@ -13,7 +13,9 @@
 		@helper.form(routes.Application.commentNews(story.id.get)) {
 			<h3>comment this news:</h3>
 			<textarea class="xxlarge" name="comment" rows="4"></textarea>
-			<input type="submit" value="comment" class="btn info"/>
+			<div class="clearfix">
+				<input type="submit" value="comment" class="btn info"/>
+			</div>
 		}
 	</div>
 	@comments.map {c =>

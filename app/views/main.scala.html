@@ -16,20 +16,18 @@
     		<div class="topbar">
     			<div class="fill">
     				<div class="container">
-    					<a class="brand" href="#">Scala News</a>
+    					<a class="brand" href="@routes.Application.news()">Scala News</a>
     					<ul class="nav">
     						<li><a href="#">new</a></li>
-    						<li><a href="#">comments</a></li>
-    						<li><a href="#">ask</a></li>
-    						<li><a href="#">submit</a></li>
+    						<li><a href="@routes.NewsController.submit()">submit</a></li>
     					</ul>
 					@if(!session.get("username")) {
                     <div id="log_sig" class="pull-right">
     					<a href="@routes.Application.login()" class="btn info">login</a>
-    					<a href="#" class="btn info">signup</a>
+    					<a href="@routes.Application.signup()" class="btn info">signup</a>
                     </div>
 					}else{
-						<div class="pull-right">
+						<div class="user-info pull-right">
 							<span>@session.get("username")</span> | <a href="@routes.Application.logout()">logout</a>
 						</div>
 					}
