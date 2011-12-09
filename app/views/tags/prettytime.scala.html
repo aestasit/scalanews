@@ -1,5 +1,5 @@
 @(time:java.util.Date)
 @import com.ocpsoft.pretty.time.PrettyTime;
-@{ val p =new PrettyTime()
- time
+@{ val p =new PrettyTime(java.util.Locale.US)
+ p.format(time)
 }

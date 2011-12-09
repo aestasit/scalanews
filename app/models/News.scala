@@ -48,13 +48,12 @@ object News {
         SQL(
         """
           insert into vote (id, storyId, created, profileId) values (
-            {id}, {storyId}, {created}, {profileId}
+            {id}, {storyId}, NOW(), {profileId}
           )
         """
         ).on(
             'id -> id,
             'storyId -> newsid,
-            'created -> new java.util.Date(),
             'profileId -> userid
         ).executeUpdate()
     }
@@ -102,7 +101,7 @@ object News {
           SQL(
             """
               insert into story values (
-                {id}, {title}, {story}, {profileId}, {created}, {votes}, {rank}
+                {id}, {title}, {story}, {profileId},NOW(), {votes}, {rank}
               )
             """
           ).on(
@@ -110,7 +109,6 @@ object News {
             'title -> news.title,
             'story -> news.link,
             'profileId -> news.user,
-            'created -> new java.util.Date(),
             'votes -> 0,
             'rank -> 0
             
