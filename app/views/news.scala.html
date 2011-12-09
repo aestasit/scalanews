@@ -1,4 +1,6 @@
+
 @(newz: Seq[News], votedStories:List[String])(implicit session: Session)
+@import tags._
 @connectedClass(notConnectedClass:String,connectedClass:String) = @{
   if(session.get("username")){connectedClass}else{notConnectedClass}
 }
@@ -18,7 +20,7 @@
       </div>
       <div class="span11">
       <h3>[@n.id.get.toString] @n.title</h3><span>(@n.link)</span>
-      <p><span>@n.points points</span> by <a href="#">@n.username</a> | 1 hour ago | <a href="@routes.Application.viewNewsComments(n.id.get)">@n.comments comments</a> </p>
+      <p><span>@n.points points</span> by <a href="#">@n.username</a> | @prettytime(n.created) | <a href="@routes.Application.viewNewsComments(n.id.get)">@n.comments comments</a> </p>
       </div>
   </div>
   

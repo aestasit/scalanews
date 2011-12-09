@@ -23,7 +23,8 @@ object NewsController extends Controller with Secured {
       "user" -> ignored(100),
       "username"->ignored(""),
       "points" -> ignored(1),
-      "comments" -> ignored(0)
+      "comments" -> ignored(0),
+      "created" -> ignored(new java.util.Date())
     )
   )
 
@@ -37,7 +38,7 @@ object NewsController extends Controller with Secured {
         news =>  {
               // Add the news!
               News.create(
-                News(NotAssigned, news.title, news.link, 1001,"", 0,0)
+                News(NotAssigned, news.title, news.link, 1001,"", 0,0,new java.util.Date())
               )
               Redirect("/news")
           }
